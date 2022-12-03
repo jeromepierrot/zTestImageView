@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
     val grayFilterType = intArrayOf(R.color.filter_gray_200, R.color.filter_gray_500, R.color.filter_gray_700, R.color.filter_gray_900)
     val redFilterType = intArrayOf(R.color.filter_red_200, R.color.filter_red_500, R.color.filter_red_700, R.color.filter_red_900)
     var i = 0
+    var rotationClockwise = true
+    var rotationX = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +41,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         // Rotate and filter button clicks
         rotateButton.setOnClickListener(this)
         rotateButton.setOnLongClickListener(this)
+        rotateXyButton.setOnClickListener(this)
+        rotateXyButton.setOnLongClickListener(this)
         filterButton.setOnClickListener(this)
         filterButton.setOnLongClickListener(this)
 
@@ -64,9 +68,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
                         i++
                     }
                 } else if (v?.id == rotateButton.id){
-                    Toast.makeText(this, "This button is not implemented yet", Toast.LENGTH_SHORT).show()
+                    if (rotationClockwise) imageView.rotation += 5f
+                    else imageView.rotation -= 5f
+                } else if (v?.id == rotateXyButton.id){
+                    if (rotationX && rotationClockwise) imageView.rotationX += 5f           // rotation on X axis clockwise
+                    else if (rotationX && !rotationClockwise) imageView.rotationX -= 5f     // rotation on X axis counter-clockwise
+                    else if (!rotationX && rotationClockwise) imageView.rotationY += 5f     // rotation on Y axis clockwise
+                    else imageView.rotationY -= 5f                                          // rotation on Y axis counter-clockwise
+                    //Toast.makeText(this, "Rotate Axis : not yet implemented", Toast.LENGTH_SHORT).show()
                 } else if(v?.id == filterButton.id){
-                    imageView.setColorFilter(ContextCompat.getColor(this, redFilterType[Random.nextInt(0,4)]))
+                    // RED filter
+                    imageView.setColorFilter(ContextCompat.getColor(this, redFilterType[Random.nextInt(1,4)]))
                 } else if (v?.id == playButton.id){
                     resumeSound(this.soundId)
                     Toast.makeText(this, "Play Button : please Long press to play a sound", Toast.LENGTH_SHORT).show()
@@ -94,10 +106,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
                 if (v?.id == imageButton.id) {
                     imageView.colorFilter = null
                     imageView.scaleType = ImageView.ScaleType.FIT_CENTER
-                    Toast.makeText(this, "Scale type and color filter reset !!!", Toast.LENGTH_SHORT).show()
+                    imageView.rotation = 0f
+                    imageView.rotationX = 0f
+                    imageView.rotationY = 0f
+                    Toast.makeText(this, "Scale type, rotation and color filter reset !!!", Toast.LENGTH_SHORT).show()
+                    return true
+                } else if (v?.id == rotateButton.id){
+                    // reverse rotation orientation (whatever X, Y or Z axis)
+                    rotationClockwise = !rotationClockwise
+                    Toast.makeText(this, "Rotation direction reversed", Toast.LENGTH_SHORT).show()
+                    return true
+                } else if (v?.id == rotateXyButton.id){
+                    // reverse rotation Axis (X vs Y)
+                    rotationX = !rotationX
+                    Toast.makeText(this, "XY axis rotation type changed", Toast.LENGTH_SHORT).show()
                     return true
                 } else if (v?.id == filterButton.id){
-                    imageView.setColorFilter(ContextCompat.getColor(this, grayFilterType[Random.nextInt(1,3)]))
+                    // Grey filter
+                    imageView.setColorFilter(ContextCompat.getColor(this, grayFilterType[Random.nextInt(1,4)]))
                     Toast.makeText(this, "Grey filter applied !!!", Toast.LENGTH_SHORT).show()
                     return true
                 } else if (v?.id == playButton.id){

@@ -13,8 +13,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:scaleType="centerCrop"
         android:contentDescription="@string/picture"
+        android:rotation="0"
+        android:rotationX="0"
+        android:rotationY="0"
+        android:scaleType="centerCrop"
         app:srcCompat="@drawable/womanauto_640" />
 
     <ImageButton
@@ -37,6 +40,16 @@
         android:contentDescription="@string/color_picture_button"
         android:minHeight="48dp"
         app:srcCompat="@android:drawable/ic_menu_manage" />
+
+    <ImageButton
+        android:id="@+id/rotateXyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center"
+        android:layout_margin="10dp"
+        android:contentDescription="@string/rotate_axis_picture_button"
+        android:minHeight="48dp"
+        app:srcCompat="@android:drawable/ic_menu_directions" />
 
     <ImageButton
         android:id="@+id/rotateButton"

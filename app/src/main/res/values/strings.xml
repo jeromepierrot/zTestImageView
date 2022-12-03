@@ -6,4 +6,5 @@
     <string name="change_picture_button">Change Picture button</string>
     <string name="picture">Picture</string>
     <string name="color_picture_button">color_picture_button</string>
+    <string name="rotate_axis_picture_button">Rotate XY axis picture button</string>
 </resources>
