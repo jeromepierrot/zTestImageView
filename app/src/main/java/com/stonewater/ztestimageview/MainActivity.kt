@@ -26,29 +26,42 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        soundPool = SoundPool(6, AudioManager.STREAM_MUSIC, 0)
+        soundPool = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
         soundPool!!.load(baseContext, R.raw.nothing_from_nothing, 1)
 
         imageView.setOnClickListener(this)
         imageView.setOnLongClickListener(this)
         imageButton.setOnClickListener(this)
         imageButton.setOnLongClickListener(this)
+        playButton.setOnClickListener(this)
+        playButton.setOnLongClickListener(this)
+        stopButton.setOnClickListener(this)
+        stopButton.setOnLongClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when (v) {
             is ImageButton -> {
-                if (i == samplePictures.size) {
-                    i = 0
-                    imageView.setImageResource(samplePictures[i])
-                    imageView.colorFilter = null
-                    i++
+                if (v?.id == imageButton.id) {
+                    if (i == samplePictures.size) {
+                        i = 0
+                        imageView.setImageResource(samplePictures[i])
+                        imageView.colorFilter = null
+                        i++
+                    } else {
+                        imageView.setImageResource(samplePictures[i])
+                        imageView.setColorFilter(ContextCompat.getColor(this, grayFilterType[Random.nextInt(0,3)]))
+                        i++
+                    }
+                } else if (v?.id == playButton.id){
+                    resumeSound(this.soundId)
+                    Toast.makeText(this, "Play Button : please Long press to play a sound", Toast.LENGTH_SHORT).show()
+                } else if (v?.id == stopButton.id) {
+                    pauseSound(this.soundId)
+                    //Toast.makeText(this, "Stop Button : Not yet implemented", Toast.LENGTH_SHORT).show()
                 } else {
-                    imageView.setImageResource(samplePictures[i])
-                    imageView.setColorFilter(ContextCompat.getColor(this, grayFilterType[Random.nextInt(0,3)]))
-                    i++
+                    Toast.makeText(this, "This button is not implemented yet", Toast.LENGTH_SHORT).show()
                 }
-                //Toast.makeText(this, "Button click : Not yet implemented", Toast.LENGTH_LONG).show()
             }
             is ImageView -> {
                 imageView.setColorFilter(ContextCompat.getColor(this, redFilterType[Random.nextInt(0,3)]))
@@ -62,8 +75,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
     override fun onLongClick(v: View?): Boolean {
         when (v) {
             is ImageButton -> {
-                playSound(this.soundId)
-                return false
+                if (v?.id == imageButton.id) {
+                    // DO NOTHING
+                    return false
+                } else if (v?.id == playButton.id){
+                    playSound(this.soundId)
+                    return true
+                } else {
+                    Toast.makeText(this, "Long click : this does nothing !!!", Toast.LENGTH_LONG).show()
+                    return true
+                }
             }
             is ImageView -> {
                 if (i == samplePictures.size) {
@@ -81,7 +102,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
                 //Toast.makeText(this, "Image click : Not yet implemented", Toast.LENGTH_LONG).show()
             }
             else -> {
-                Toast.makeText(this, "Click : this does nothing !!!", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Long click : this does nothing !!!", Toast.LENGTH_LONG).show()
                 return false
             }
         }
@@ -89,11 +110,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
 
     fun playSound(soundId: Int){
         soundPool?.play(soundId,1F, 1F, 0, 0, 1F)
+        soundPool?.autoResume()
         Toast.makeText(this, "Playing music...", Toast.LENGTH_SHORT).show()
     }
 
-    /*fun stopSound(soundId: Int){
-        soundPool?.stop(soundId)
+    fun resumeSound(soundId: Int){
+        soundPool?.autoResume()
+        Toast.makeText(this, "Playing music...", Toast.LENGTH_SHORT).show()
+    }
+
+    fun pauseSound(soundId: Int){
+        soundPool?.autoPause()
         Toast.makeText(this, "Stop music...", Toast.LENGTH_LONG).show()
-    }*/
+    }
 }
