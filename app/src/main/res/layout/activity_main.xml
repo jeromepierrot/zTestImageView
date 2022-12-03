@@ -12,27 +12,59 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:scaleType="centerCrop"
+        android:contentDescription="@string/picture"
         app:srcCompat="@drawable/womanauto_640" />
 
     <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:minHeight="48dp"
+        android:layout_gravity="bottom|end"
+        android:contentDescription="@string/change_picture_button"
         app:srcCompat="@android:drawable/ic_menu_set_as"
-        android:layout_gravity="bottom|right"/>
+        />
+
+    <ImageButton
+        android:id="@+id/filterButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_margin="10dp"
+        android:contentDescription="@string/color_picture_button"
+        android:minHeight="48dp"
+        app:srcCompat="@android:drawable/ic_menu_manage" />
+
+    <ImageButton
+        android:id="@+id/rotateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_margin="10dp"
+        android:contentDescription="@string/rotate_picture_button"
+        android:minHeight="48dp"
+        app:srcCompat="@android:drawable/ic_menu_rotate" />
 
     <ImageButton
         android:id="@+id/playButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:minHeight="48dp"
         android:layout_gravity="bottom|center_horizontal"
+        android:contentDescription="@string/play_resume_button"
         app:srcCompat="@android:drawable/ic_media_play" />
 
     <ImageButton
         android:id="@+id/stopButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|left"
+        android:layout_margin="10dp"
+        android:minHeight="48dp"
+        android:layout_gravity="bottom|start"
+        android:contentDescription="@string/pause_button"
         app:srcCompat="@android:drawable/ic_media_pause" />
 </FrameLayout>

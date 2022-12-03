@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
     val scaleType = arrayListOf(ImageView.ScaleType.CENTER_CROP, ImageView.ScaleType.FIT_CENTER, ImageView.ScaleType.CENTER_CROP, ImageView.ScaleType.FIT_XY)
     val grayFilterType = intArrayOf(R.color.filter_gray_200, R.color.filter_gray_500, R.color.filter_gray_700, R.color.filter_gray_900)
     val redFilterType = intArrayOf(R.color.filter_red_200, R.color.filter_red_500, R.color.filter_red_700, R.color.filter_red_900)
-    //val sampleMusic = R.raw.nothing_from_nothing
     var i = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,10 +28,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
         soundPool = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
         soundPool!!.load(baseContext, R.raw.nothing_from_nothing, 1)
 
+        // Image clicks
         imageView.setOnClickListener(this)
         imageView.setOnLongClickListener(this)
+
+        // Image button clicks
         imageButton.setOnClickListener(this)
         imageButton.setOnLongClickListener(this)
+
+        // Rotate and filter button clicks
+        rotateButton.setOnClickListener(this)
+        rotateButton.setOnLongClickListener(this)
+        filterButton.setOnClickListener(this)
+        filterButton.setOnLongClickListener(this)
+
+        // Play and stop button clicks
         playButton.setOnClickListener(this)
         playButton.setOnLongClickListener(this)
         stopButton.setOnClickListener(this)
@@ -41,6 +51,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
 
     override fun onClick(v: View?) {
         when (v) {
+            // simple click on buttons
             is ImageButton -> {
                 if (v?.id == imageButton.id) {
                     if (i == samplePictures.size) {
@@ -50,9 +61,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
                         i++
                     } else {
                         imageView.setImageResource(samplePictures[i])
-                        imageView.setColorFilter(ContextCompat.getColor(this, grayFilterType[Random.nextInt(0,3)]))
                         i++
                     }
+                } else if (v?.id == rotateButton.id){
+                    Toast.makeText(this, "This button is not implemented yet", Toast.LENGTH_SHORT).show()
+                } else if(v?.id == filterButton.id){
+                    imageView.setColorFilter(ContextCompat.getColor(this, redFilterType[Random.nextInt(0,4)]))
                 } else if (v?.id == playButton.id){
                     resumeSound(this.soundId)
                     Toast.makeText(this, "Play Button : please Long press to play a sound", Toast.LENGTH_SHORT).show()
@@ -63,46 +77,46 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
                     Toast.makeText(this, "This button is not implemented yet", Toast.LENGTH_SHORT).show()
                 }
             }
+
+            //simple click on the picture
             is ImageView -> {
-                imageView.setColorFilter(ContextCompat.getColor(this, redFilterType[Random.nextInt(0,3)]))
                 imageView.scaleType = scaleType.shuffled().take(1)[0]
-                //Toast.makeText(this, "Image click : Not yet implemented", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Shuffled scale type applied !!!", Toast.LENGTH_SHORT).show()
             }
-            else -> Toast.makeText(this, "Click : this does nothing !!!", Toast.LENGTH_LONG).show()
+            else -> Toast.makeText(this, "Click : this does nothing !!!", Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onLongClick(v: View?): Boolean {
         when (v) {
+            // long click on buttons
             is ImageButton -> {
                 if (v?.id == imageButton.id) {
-                    // DO NOTHING
-                    return false
+                    imageView.colorFilter = null
+                    imageView.scaleType = ImageView.ScaleType.FIT_CENTER
+                    Toast.makeText(this, "Scale type and color filter reset !!!", Toast.LENGTH_SHORT).show()
+                    return true
+                } else if (v?.id == filterButton.id){
+                    imageView.setColorFilter(ContextCompat.getColor(this, grayFilterType[Random.nextInt(1,3)]))
+                    Toast.makeText(this, "Grey filter applied !!!", Toast.LENGTH_SHORT).show()
+                    return true
                 } else if (v?.id == playButton.id){
                     playSound(this.soundId)
                     return true
                 } else {
-                    Toast.makeText(this, "Long click : this does nothing !!!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Long click : this does nothing !!!", Toast.LENGTH_SHORT).show()
                     return true
                 }
             }
+
+            // long click on picture
             is ImageView -> {
-                if (i == samplePictures.size) {
-                    i = 0
-                    imageView.setImageResource(samplePictures[i])
-                    imageView.colorFilter = null
-                    i++
-                    return true
-                } else {
-                    imageView.setImageResource(samplePictures[i])
-                    imageView.setColorFilter(ContextCompat.getColor(this, grayFilterType[Random.nextInt(0,3)]))
-                    i++
-                    return true
-                }
-                //Toast.makeText(this, "Image click : Not yet implemented", Toast.LENGTH_LONG).show()
+                imageView.scaleType = ImageView.ScaleType.FIT_CENTER
+                Toast.makeText(this, "Scale type reset !!!", Toast.LENGTH_SHORT).show()
+                return true
             }
             else -> {
-                Toast.makeText(this, "Long click : this does nothing !!!", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Long click : this does nothing !!!", Toast.LENGTH_SHORT).show()
                 return false
             }
         }
@@ -121,6 +135,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, View.OnLongClick
 
     fun pauseSound(soundId: Int){
         soundPool?.autoPause()
-        Toast.makeText(this, "Stop music...", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Stop music...", Toast.LENGTH_SHORT).show()
     }
 }
